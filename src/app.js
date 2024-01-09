@@ -32,4 +32,9 @@ app.use(express.static("public"));
 // Read and set user cookies
 app.use(cookieParser());
 
+// router code from here
+import userRouter from "./routes/user.route.js";
+app.use("/api/v1/users", userRouter);
+
+
 export { app };
