@@ -20,7 +20,9 @@ const checkJWT = asyncHandler(async (req, res, next) => {
     throw new ApiError(401, "Unauthorized");
   }
 
-  const existingUser = await User.findById(_id).select("-password -refreshToken");
+  const existingUser = await User.findById(_id).select(
+    "-password -refreshToken"
+  );
   if (!existingUser) {
     throw new ApiError(401, "Unauthorized");
   }

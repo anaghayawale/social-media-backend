@@ -1,14 +1,18 @@
 import { Router } from "express";
-import { checkJWT } from "../middleware/auth.middleware.js"
-import {registerUser, loginUser, logoutUser, refreshAccessToken} from "../controllers/user.controller.js"
+import { checkJWT } from "../middleware/auth.middleware.js";
+import {
+  registerUser,
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+} from "../controllers/user.controller.js";
 
 const router = Router();
 
-// POST 
+// POST
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/logout").post(checkJWT, logoutUser);
-router.route("/refresh-accesstoken").post(checkJWT,refreshAccessToken);
-
+router.route("/refresh-accesstoken").post(checkJWT, refreshAccessToken);
 
 export default router;

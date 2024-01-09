@@ -9,7 +9,6 @@ import {
 import { User } from "../models/user.model.js";
 import { cookieOptions } from "../constants.js";
 
-
 // ------------------------- Register User -------------------------
 const registerUser = asyncHandler(async (req, res, next) => {
   const { userName, fullName, avatar, bio, email, password } = req.body;
