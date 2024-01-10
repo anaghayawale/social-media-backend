@@ -102,11 +102,9 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
-// populate followers and posts in userSchema
-
-// userSchema.pre("find", function (next) {
-//     this.populate("followers").populate("posts");
-//     next();
-//     });
+userSchema.pre("find", function (next) {
+  this.populate("followers").populate("posts");
+  next();
+});
 
 export const User = mongoose.model("User", userSchema);

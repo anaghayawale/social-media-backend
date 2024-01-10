@@ -23,7 +23,8 @@ const commentSchema = new Schema(
 const postSchema = new Schema(
   {
     userId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     image: {
@@ -31,10 +32,8 @@ const postSchema = new Schema(
     },
     caption: {
       type: String,
+      required: true,
     },
-    // tags: [{
-    //     type: String,
-    // }],
     likes: [
       {
         type: Schema.Types.ObjectId,
@@ -47,5 +46,10 @@ const postSchema = new Schema(
     timestamps: true,
   }
 );
+
+// postSchema.pre("find", function (next) {
+//   this.populate("userId").populate("comments.userId").populate("likes");
+//   next();
+// });
 
 export const Post = mongoose.model("Post", postSchema);
