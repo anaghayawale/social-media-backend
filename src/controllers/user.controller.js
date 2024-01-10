@@ -9,6 +9,19 @@ import {
 import { User } from "../models/user.model.js";
 import { cookieOptions } from "../constants.js";
 
+const generateAccessAndRefreshTokens = async (user = null, id = undefined) => {
+  if (!user && !id) throw new ApiError(400, "Invalid data");
+  if (!user) user = await User.findById(id);
+  const token = user.generateAccessToken();
+  const newRefreshToken = user.generateRefreshToken();
+  user.refreshToken = newRefreshToken;
+  await user.save({
+    validateBeforeSave: false,
+  });
+  console.log("hii", token, newRefreshToken);
+  return { token, newRefreshToken };
+};
+
 // ------------------------- Register User -------------------------
 const registerUser = asyncHandler(async (req, res, next) => {
   const { userName, fullName, avatar, bio, email, password } = req.body;
@@ -112,13 +125,10 @@ const logoutUser = asyncHandler(async (req, res, next) => {
 
 // ------------------------- Refresh Access Token --------------------------------
 const refreshAccessToken = asyncHandler(async (req, res, next) => {
-  const existingUser = req.user;
-  const token = existingUser.generateAccessToken();
-  const newRefreshToken = existingUser.generateRefreshToken();
-
-  existingUser.refreshToken = newRefreshToken;
-  await existingUser.save();
-
+  const { token, newRefreshToken } = await generateAccessAndRefreshTokens(
+    null,
+    req.user._id
+  );
   res
     .status(200)
     .cookie("accessToken", token, cookieOptions)
