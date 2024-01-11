@@ -59,4 +59,20 @@ const updatePost = asyncHandler(async (req, res, next) => {
   res.status(200).json(new ApiResponse(200, { existingPost }, "Post updated"));
 });
 
-export { addNewPost, updatePost };
+// ------------------------- Delete Post -------------------------
+const deletePost = asyncHandler(async (req, res, next) => {
+  const { postId } = req.body;
+
+  if (!postId) {
+    throw new ApiError(400, "Incomplete Data");
+  }
+
+  const existingPost = await Post.findOneAndDelete({ _id: postId });
+  if (!existingPost) {
+    throw new ApiError(500, "Error in deleting post");
+  }
+
+  res.status(200).json(new ApiResponse(200, {}, "Post deleted"));
+});
+
+export { addNewPost, updatePost, deletePost };

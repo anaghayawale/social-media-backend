@@ -9,7 +9,7 @@ const checkJWT = asyncHandler(async (req, res, next) => {
   const { refreshToken } = req.cookies || req.body?.refreshToken;
 
   if (!(accessToken || refreshToken)) {
-    throw new ApiError(401, "Middleware: No token, authorization denied");
+    throw new ApiError(401, "Unauthorized");
   }
 
   const { _id } = accessToken
