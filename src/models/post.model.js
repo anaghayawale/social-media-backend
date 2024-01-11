@@ -58,4 +58,12 @@ postSchema.pre("save", function (next) {
   next();
 });
 
+postSchema.pre("find", function (next) {
+  this.populate(
+    "userId",
+    "-password -refreshToken -email -createdAt -updatedAt -followers -posts"
+  );
+  next();
+});
+
 export const Post = mongoose.model("Post", postSchema);

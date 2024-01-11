@@ -75,4 +75,15 @@ const deletePost = asyncHandler(async (req, res, next) => {
   res.status(200).json(new ApiResponse(200, {}, "Post deleted"));
 });
 
-export { addNewPost, updatePost, deletePost };
+// ------------------------- get All Posts -------------------------
+const getAllPosts = asyncHandler(async (req, res, next) => {
+  const userId = req.user._id;
+  const posts = await Post.find({ userId }).sort({ createdAt: -1 });
+  if (!posts) {
+    throw new ApiError(500, "Error in fetching posts");
+  }
+
+  res.status(200).json(new ApiResponse(200, { posts }, "Posts fetched"));
+});
+
+export { addNewPost, updatePost, deletePost, getAllPosts };
