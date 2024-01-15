@@ -12,6 +12,8 @@ const router = Router();
 // POST
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
+
+// PROTECTED ROUTES
 router.route("/logout").post(checkJWT, logoutUser);
 router.route("/refresh-accesstoken").post(checkJWT, refreshAccessToken);
 

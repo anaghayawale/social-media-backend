@@ -9,7 +9,7 @@ import {
 
 const router = Router();
 
-// POST
+// PROTECTED ROUTES
 router.route("/addpost").post(checkJWT, addNewPost);
 router.route("/updatemypost").put(checkJWT, updatePost);
 router.route("/deletemypost").delete(checkJWT, deletePost);

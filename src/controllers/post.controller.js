@@ -43,7 +43,7 @@ const updatePost = asyncHandler(async (req, res, next) => {
     throw new ApiError(403, "Unauthorized");
   }
 
-  const updatedPost = await Post.findOneAndUpdate(
+  const updatedPost = await Post.updateOne(
     { _id: postId },
     {
       caption,
