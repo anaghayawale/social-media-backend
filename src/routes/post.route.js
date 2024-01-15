@@ -9,10 +9,10 @@ import {
 
 const router = Router();
 
-// POST
+// PROTECTED ROUTES
 router.route("/addpost").post(checkJWT, addNewPost);
-router.route("/updatepost").put(checkJWT, updatePost);
-router.route("/deletepost").delete(checkJWT, deletePost);
-router.route("/getposts").get(checkJWT, getAllPosts);
+router.route("/updatemypost").put(checkJWT, updatePost);
+router.route("/deletemypost").delete(checkJWT, deletePost);
+router.route("/getmyposts").get(checkJWT, getAllPosts);
 
 export default router;
