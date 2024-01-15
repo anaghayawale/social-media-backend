@@ -66,4 +66,10 @@ postSchema.pre("find", function (next) {
   next();
 });
 
+postSchema.pre("updateOne", function (next) {
+  if (this.userId == this.userId._id) {
+    next();
+  }
+});
+
 export const Post = mongoose.model("Post", postSchema);

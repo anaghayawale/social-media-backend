@@ -11,8 +11,8 @@ const router = Router();
 
 // POST
 router.route("/addpost").post(checkJWT, addNewPost);
-router.route("/updatepost").put(checkJWT, updatePost);
-router.route("/deletepost").delete(checkJWT, deletePost);
+router.route("/updatemypost").put(checkJWT, updatePost);
+router.route("/deletemypost").delete(checkJWT, deletePost);
 router.route("/getposts").get(checkJWT, getAllPosts);
 
 export default router;
