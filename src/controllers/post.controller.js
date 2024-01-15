@@ -28,28 +28,33 @@ const addNewPost = asyncHandler(async (req, res, next) => {
 // ------------------------- Update self Post -------------------------
 const updatePost = asyncHandler(async (req, res, next) => {
   const { postId, caption } = req.body;
-  const userId = req.user._id;
+  const userIdFromToken = req.user._id;
 
   if (bodyDataExists(postId && caption)) {
     throw new ApiError(400, "Incomplete Data");
   }
 
-  if (userId !== postId.userId) {
+  const existingPost = await Post.findOne({ _id: postId });
+  if (!existingPost) {
+    throw new ApiError(500, "Post not found");
+  }
+
+  if (existingPost.userId.toString() != userIdFromToken) {
     throw new ApiError(403, "Unauthorized");
   }
 
-  const existingPost = await Post.findOneAndUpdate(
+  const updatedPost = await Post.findOneAndUpdate(
     { _id: postId },
     {
       caption,
     },
     { new: true }
   );
-  if (!existingPost) {
+  if (!updatedPost) {
     throw new ApiError(500, "Error in updating post");
   }
 
-  res.status(200).json(new ApiResponse(200, { existingPost }, "Post updated"));
+  res.status(200).json(new ApiResponse(200, { updatedPost }, "Post updated"));
 });
 
 // ------------------------- Delete Self Post -------------------------
