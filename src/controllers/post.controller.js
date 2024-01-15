@@ -83,7 +83,7 @@ const deletePost = asyncHandler(async (req, res, next) => {
   res.status(200).json(new ApiResponse(200, {}, "Post deleted"));
 });
 
-// ------------------------- get All Posts -------------------------
+// ------------------------- get All Posts (self) -------------------------
 const getAllPosts = asyncHandler(async (req, res, next) => {
   const userId = req.user._id;
   const posts = await Post.find({ userId }).sort({ createdAt: -1 });
