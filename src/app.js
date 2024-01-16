@@ -39,7 +39,7 @@ app.use("/api/v1/users", userRouter);
 import postRouter from "./routes/post.route.js";
 app.use("/api/v1/posts", postRouter);
 
-import followerRouter from "./routes/follower.route.js";
+import followerRouter from "./routes/follow.route.js";
 app.use("/api/v1/followers", followerRouter);
 
 export { app };
