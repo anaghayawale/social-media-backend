@@ -31,6 +31,7 @@ const postSchema = new Schema(
     },
     image: {
       type: String,
+      default: "",
     },
     caption: {
       type: String,
