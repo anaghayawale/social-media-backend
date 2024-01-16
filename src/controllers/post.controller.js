@@ -15,7 +15,7 @@ const addNewPost = asyncHandler(async (req, res, next) => {
 
   const newPost = await Post.create({
     userId,
-    image: image || "",
+    image: image,
     caption,
   });
   if (!newPost) {
@@ -34,22 +34,17 @@ const updatePost = asyncHandler(async (req, res, next) => {
     throw new ApiError(400, "Incomplete Data");
   }
 
-  const existingPost = await Post.findOne({ _id: postId });
+  const existingPost = await Post.findOne({
+    _id: postId,
+    userId: userIdFromToken,
+  });
   if (!existingPost) {
     throw new ApiError(500, "Post not found");
   }
 
-  if (existingPost.userId.toString() != userIdFromToken) {
-    throw new ApiError(403, "Unauthorized");
-  }
+  existingPost.caption = caption;
+  const updatedPost = await existingPost.save();
 
-  const updatedPost = await Post.updateOne(
-    { _id: postId },
-    {
-      caption,
-    },
-    { new: true }
-  );
   if (!updatedPost) {
     throw new ApiError(500, "Error in updating post");
   }
@@ -66,16 +61,15 @@ const deletePost = asyncHandler(async (req, res, next) => {
     throw new ApiError(400, "Incomplete Data");
   }
 
-  const existingPost = await Post.findOne({ _id: postId });
+  const existingPost = await Post.findOne({
+    _id: postId,
+    userId: userIdFromToken,
+  });
   if (!existingPost) {
-    throw new ApiError(500, "Post not found");
+    throw new ApiError(500, "Post not found for this user");
   }
 
-  if (existingPost.userId.toString() != userIdFromToken) {
-    throw new ApiError(403, "Unauthorized");
-  }
-
-  const deleteResult = await Post.deleteOne({ _id: postId });
+  const deleteResult = await existingPost.deleteOne();
   if (deleteResult.deletedCount === 0) {
     throw new ApiError(500, "Error in deleting post");
   }
